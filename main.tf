@@ -1,0 +1,1 @@
+# All kind of resources

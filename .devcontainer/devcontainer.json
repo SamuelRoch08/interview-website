@@ -1,0 +1,47 @@
+{
+  "name": "Terraform development container",
+  "onCreateCommand": "pre-commit install && git config --add --bool push.autoSetupRemote true",
+  "image": "mcr.microsoft.com/devcontainers/universal:2-linux",
+  "features": {
+    "ghcr.io/devcontainers-extra/features/pre-commit:2": {},
+    "ghcr.io/devcontainers/features/terraform:1": {},
+    "ghcr.io/devcontainers-extra/features/terraform-docs:1": {}
+  },
+  "hostRequirements": {
+    "cpus": 2,
+    "memory": "4gb",
+    "storage": "8gb",
+    "gpu": false
+},
+"customizations": {
+  "codespaces": {
+    "repositories": {
+      "tmwk-ModernPlatforms/teamwork-terraform-*": {
+        "permissions": {
+          "contents": "read"
+        }
+      }
+    }
+  },
+	"vscode": {
+    "settings":{
+      "extensions.ignoreRecommendations": true,
+      "workbench.colorTheme": "Visual Studio Dark",
+      "git.autofetch": true,
+      "git.autofetchPeriod": 60,
+      "git.branchProtection": [
+        "main"
+      ],
+      "files.associations": {
+        "*.hcl": "terraform"
+      }
+    },
+		"extensions": [
+			"yzhang.markdown-all-in-one",
+			"HashiCorp.HCL",
+			"GitHub.vscode-github-actions",
+			"hediet.vscode-drawio"
+		]
+	}
+}
+}
