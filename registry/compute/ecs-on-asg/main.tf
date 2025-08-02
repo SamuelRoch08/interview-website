@@ -1,3 +1,4 @@
+## Role for EC2 in the cluster 
 resource "aws_iam_role" "ec2_role_for_ecs" {
   name = "${var.cluster_name}-ec2-role"
   assume_role_policy = jsonencode({
@@ -14,20 +15,59 @@ resource "aws_iam_role" "ec2_role_for_ecs" {
     ]
   })
 }
-
-resource "aws_iam_role_policy_attachment" "test-attach" {
+# Policy required for ECS 
+resource "aws_iam_role_policy_attachment" "ecs_for_role" {
   role       = aws_iam_role.ec2_role_for_ecs.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
 }
-
-
-resource "aws_cloudwatch_log_group" "cluster" {
-  name = "${var.cluster_name}-logs"
-  retention_in_days = 14
-  tags = var.extra_tags
+# Additional Policy for SSM access
+resource "aws_iam_role_policy_attachment" "ssm_for_role" {
+  role       = aws_iam_role.ec2_role_for_ecs.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 }
 
+resource "aws_iam_instance_profile" "ec2_role_for_ecs" {
+  name = aws_iam_role.ec2_role_for_ecs.name
+  role = aws_iam_role.ec2_role_for_ecs.name
+}
 
+# Simple cloudwatch Log group where to write cluster logs 
+resource "aws_cloudwatch_log_group" "cluster" {
+  name              = "${var.cluster_name}-logs"
+  retention_in_days = 14
+  tags              = var.extra_tags
+}
+
+# Cluster SG attached to Cluster ec2 - With default rules for inbound and outbound 
+resource "aws_security_group" "cluster" {
+  name        = "${var.cluster_name}-sg"
+  description = "SG for nodes inside ${var.cluster_name} ECS cluster"
+  vpc_id      = data.aws_subnet.app_a_subnet.vpc_id
+
+  tags = merge(var.extra_tags, {
+    Name = "${var.cluster_name}-sg"
+  })
+}
+
+resource "aws_security_group_rule" "outbound_all" {
+  security_group_id = aws_security_group.cluster.id
+  from_port = 0
+  to_port = 0
+  protocol = "-1"
+  type = "egress"
+  cidr_blocks = ["0.0.0.0/0"]
+}
+
+resource "aws_security_group_rule" "inbound_http" {
+  security_group_id = aws_security_group.cluster.id
+  from_port = 80
+  to_port = 80
+  protocol = "tcp"
+  type = "ingress"
+  cidr_blocks = ["0.0.0.0/0"]
+}
+
+# The cluster itself 
 resource "aws_ecs_cluster" "cluster" {
   name = var.cluster_name
 
@@ -49,21 +89,29 @@ resource "aws_ecs_cluster" "cluster" {
   tags = var.extra_tags
 }
 
-
+# The launch template that will be used by the ASG and, in fine, the Cluster 
 resource "aws_launch_template" "cluster" {
-  name_prefix   = "${var.cluster_name}-lt"
-  image_id      = "ami-03d2fcd553ebee199"
-  instance_type = "t4g.micro"
-
-  user_data = file("${path.module}/userdata.sh")
-
-
+  name_prefix            = "${var.cluster_name}-lt"
+  image_id               = "ami-03d2fcd553ebee199"
+  instance_type          = "t4g.micro"
+  vpc_security_group_ids = [aws_security_group.cluster.id]
+  
+  iam_instance_profile {
+    name = aws_iam_instance_profile.ec2_role_for_ecs.name
+  }
+  # We chose spot for pricing reason here 
   instance_market_options {
     market_type = "spot"
   }
   instance_initiated_shutdown_behavior = "terminate"
+
+  # Usage of template files to simplify the user data management 
+  user_data = base64encode(templatefile("${path.module}/userdata.sh.tftpl", {
+    cluster_name = aws_ecs_cluster.cluster.name
+  }))  
 }
 
+# ASG to manage EC2 instance for cluster 
 resource "aws_autoscaling_group" "cluster" {
 
   max_size            = var.cluster_max_size
@@ -80,8 +128,16 @@ resource "aws_autoscaling_group" "cluster" {
     value               = true
     propagate_at_launch = true
   }
+
+  tag {
+    key                 = "Name"
+    value               = "${aws_ecs_cluster.cluster.name}-ec2"
+    propagate_at_launch = true
+  }
+
 }
 
+# The capacity provider that is using the ASG 
 resource "aws_ecs_capacity_provider" "cluster" {
   name = "${aws_ecs_cluster.cluster.name}-cp"
 
@@ -99,4 +155,12 @@ resource "aws_ecs_capacity_provider" "cluster" {
 
   tags = var.extra_tags
 }
+
+# Link between Cluster <-> Cluster Provider <-> ASG 
+resource "aws_ecs_cluster_capacity_providers" "cluster" {
+  cluster_name = aws_ecs_cluster.cluster.name
+
+  capacity_providers = [aws_ecs_capacity_provider.cluster.name]
+}
+
 
