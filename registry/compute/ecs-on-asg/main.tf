@@ -51,20 +51,20 @@ resource "aws_security_group" "cluster" {
 
 resource "aws_security_group_rule" "outbound_all" {
   security_group_id = aws_security_group.cluster.id
-  from_port = 0
-  to_port = 0
-  protocol = "-1"
-  type = "egress"
-  cidr_blocks = ["0.0.0.0/0"]
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  type              = "egress"
+  cidr_blocks       = ["0.0.0.0/0"]
 }
 
 resource "aws_security_group_rule" "inbound_http" {
   security_group_id = aws_security_group.cluster.id
-  from_port = 80
-  to_port = 80
-  protocol = "tcp"
-  type = "ingress"
-  cidr_blocks = ["0.0.0.0/0"]
+  from_port         = 80
+  to_port           = 80
+  protocol          = "tcp"
+  type              = "ingress"
+  cidr_blocks       = ["0.0.0.0/0"]
 }
 
 # The cluster itself 
@@ -92,10 +92,10 @@ resource "aws_ecs_cluster" "cluster" {
 # The launch template that will be used by the ASG and, in fine, the Cluster 
 resource "aws_launch_template" "cluster" {
   name_prefix            = "${var.cluster_name}-lt"
-  image_id               = "ami-03d2fcd553ebee199"
+  image_id               = "ami-0b947a93d7ded9a0c" # al2023-ami-ecs-hvm-2023.0.20250730-kernel-6.1-arm64
   instance_type          = "t4g.micro"
   vpc_security_group_ids = [aws_security_group.cluster.id]
-  
+
   iam_instance_profile {
     name = aws_iam_instance_profile.ec2_role_for_ecs.name
   }
@@ -108,7 +108,7 @@ resource "aws_launch_template" "cluster" {
   # Usage of template files to simplify the user data management 
   user_data = base64encode(templatefile("${path.module}/userdata.sh.tftpl", {
     cluster_name = aws_ecs_cluster.cluster.name
-  }))  
+  }))
 }
 
 # ASG to manage EC2 instance for cluster 
