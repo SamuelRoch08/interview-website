@@ -3,6 +3,11 @@ variable "webapp_name" {
   description = "Webapp name to deploy. Will be used for all sub-resources names."
 }
 
+variable "webapp_src_code" {
+  type        = string
+  description = "Complete path to build code and publish it on ECS cluster."
+}
+
 variable "vpc_cidr" {
   type        = string
   description = "The VPC CIDR"
