@@ -37,3 +37,14 @@ resource "docker_registry_image" "webapp" {
   keep_remotely = true
 }
 
+module "ecs_alb" {
+  source = "../../components/compute/alb"
+
+  project_name             = var.webapp_name
+  is_internal              = false
+  lb_subnets               = module.network_foundations.publics_subnets_ids
+  enable_lb_access_logging = false
+  listener_port            = 80
+  listener_protocol        = "HTTP"
+  extra_tags               = var.wepapp_tags
+}
