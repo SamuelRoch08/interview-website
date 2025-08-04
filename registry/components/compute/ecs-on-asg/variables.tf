@@ -20,6 +20,11 @@ variable "cluster_subnet_ids" {
   description = "List of subnets IDs for the cluster servers."
 }
 
+variable "allowed_inbound_cidr" {
+  type        = list(string)
+  description = "Allowed inbound CIDRs that can access the nodes."
+}
+
 variable "extra_tags" {
   type        = map(string)
   description = "Extra tags to add to any resources."

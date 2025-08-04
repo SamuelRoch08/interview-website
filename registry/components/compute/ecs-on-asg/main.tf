@@ -60,11 +60,11 @@ resource "aws_security_group_rule" "outbound_all" {
 
 resource "aws_security_group_rule" "inbound_http" {
   security_group_id = aws_security_group.cluster.id
-  from_port         = 80
-  to_port           = 80
-  protocol          = "tcp"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
   type              = "ingress"
-  cidr_blocks       = ["0.0.0.0/0"]
+  cidr_blocks       = var.allowed_inbound_cidr
 }
 
 # The cluster itself 

@@ -12,8 +12,9 @@ module "network_foundations" {
 module "ecs_cluster" {
   source = "../../components/compute/ecs-on-asg"
 
-  cluster_name       = "${var.webapp_name}-cluster"
-  cluster_subnet_ids = module.network_foundations.apps_subnets_ids
+  cluster_name         = "${var.webapp_name}-cluster"
+  cluster_subnet_ids   = module.network_foundations.apps_subnets_ids
+  allowed_inbound_cidr = var.public_subnets
 }
 
 module "ecr" {

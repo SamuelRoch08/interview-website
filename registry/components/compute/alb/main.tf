@@ -34,7 +34,7 @@ module "s3_logs" {
 resource "aws_lb_target_group" "tg" {
   name                 = "${var.project_name}-lb-alb-tg"
   target_type          = "instance"
-  protocol             = "TCP"
+  protocol             = "HTTP"
   vpc_id               = data.aws_subnet.deploy_subnet.vpc_id
   deregistration_delay = 60
   port                 = var.listener_port
