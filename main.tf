@@ -7,7 +7,7 @@
 # }
 
 module "interview_webapp2" {
-  source = "./registry/app/webapp2"
+  source = "./registry/app/webapp-on-s3-cdn"
 
   profile         = var.profile
   webapp_name     = "webapp-on-s3"
