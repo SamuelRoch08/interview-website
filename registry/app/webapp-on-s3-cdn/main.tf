@@ -24,7 +24,7 @@ resource "null_resource" "synchro_project" {
   provisioner "local-exec" {
     command = "aws s3 sync ${var.webapp_src_code}/build s3://${module.s3_buckets.main_bucket} --delete --profile ${var.profile}"
   }
-  depends_on = [ null_resource.build_project ]
+  depends_on = [null_resource.build_project]
 }
 
 module "s3_buckets_dr" {
@@ -39,14 +39,14 @@ module "s3_buckets_dr" {
 }
 
 resource "null_resource" "synchro_project_dr" {
-  count  = var.deploy_dr ? 1 : 0 
+  count = var.deploy_dr ? 1 : 0
   triggers = {
     dir_sha1 = sha1(join("", [for f in fileset("${var.webapp_src_code}/src/", "**") : filesha1("${var.webapp_src_code}/src/${f}")]))
   }
   provisioner "local-exec" {
     command = "aws s3 sync ${var.webapp_src_code}/build s3://${module.s3_buckets_dr[0].main_bucket} --delete --profile ${var.profile}"
   }
-  depends_on = [ null_resource.build_project ]
+  depends_on = [null_resource.build_project]
 }
 
 # Create a distribution with default parameters 
