@@ -9,6 +9,18 @@ module "network_foundations" {
   extra_tags     = var.wepapp_tags
 }
 
+module "ecs_alb" {
+  source = "../../components/compute/alb"
+
+  project_name             = var.webapp_name
+  is_internal              = false
+  lb_subnets               = module.network_foundations.publics_subnets_ids
+  enable_lb_access_logging = false
+  listener_port            = 80
+  listener_protocol        = "HTTP"
+  extra_tags               = var.wepapp_tags
+}
+
 module "ecs_cluster" {
   source = "../../components/compute/ecs-on-asg"
 
@@ -38,14 +50,16 @@ resource "docker_registry_image" "webapp" {
   keep_remotely = true
 }
 
-module "ecs_alb" {
-  source = "../../components/compute/alb"
+module "task_definition" {
+  source = "../../components/compute/ecs-task-definition"
 
-  project_name             = var.webapp_name
-  is_internal              = false
-  lb_subnets               = module.network_foundations.publics_subnets_ids
-  enable_lb_access_logging = false
-  listener_port            = 80
-  listener_protocol        = "HTTP"
-  extra_tags               = var.wepapp_tags
+  project_name     = var.webapp_name
+  container_name   = "http"
+  image_uri        = docker_image.webapp_image.name
+  task_cpu         = 256
+  task_mem         = 512
+  cp_compatibility = ["EC2"]
+  cpu_arch         = "X86_64"
+
 }
+
