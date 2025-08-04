@@ -9,8 +9,8 @@ variable "main_bucket_name" {
 }
 
 variable "use_log_bucket" {
-  type = bool
-  default = false
+  type        = bool
+  default     = false
   description = "Use logging bucket or not."
 }
 
@@ -21,8 +21,8 @@ variable "log_bucket_name" {
 }
 
 variable "use_failover_bucket" {
-  type = bool
-  default = false
+  type        = bool
+  default     = false
   description = "Use failover bucket or not."
 }
 

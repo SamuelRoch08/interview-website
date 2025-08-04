@@ -100,7 +100,7 @@ resource "aws_s3_bucket_policy" "allow_cloudfront_access" {
 }
 
 resource "aws_s3_bucket_policy" "allow_cloudfront_access_failover" {
-  count  = var.use_failover_bucket? 1 : 0
+  count  = var.use_failover_bucket ? 1 : 0
   bucket = data.aws_s3_bucket.failover_bucket[0].id
   policy = templatefile("${path.module}/s3_cloudfront_access.json.tftpl", {
     s3_arn         = data.aws_s3_bucket.failover_bucket[0].arn,
