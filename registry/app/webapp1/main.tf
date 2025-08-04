@@ -17,8 +17,8 @@ module "ecs_cluster" {
 }
 
 module "ecr" {
-  source    = "../../compute/ecr"
-  repo_name = "${var.webapp_name}-ecr"
+  source       = "../../compute/ecr"
+  repo_name    = "${var.webapp_name}-ecr"
   force_delete = true
 }
 
