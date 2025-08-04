@@ -29,18 +29,18 @@ module "cloudfront" {
 # Associate the new policy of S3 to allow cloudfront to access the bucket. 
 resource "aws_s3_bucket_policy" "allow_cloudfront_access" {
   bucket = module.s3.bucket_id
-  policy = jsonencode(templatefile("${path.module}/s3_cloudfront_access.json.tftpl"), {
+  policy = jsonencode(templatefile("${path.module}/s3_cloudfront_access.json.tftpl", {
     s3_arn = module.s3.bucket_arn, 
     cloudfront_arn = module.cloudfront.distribution_arn
-  })
+  }))
 }
 resource "aws_s3_bucket_policy" "s3_cloudfront_logs_access" {
   bucket = module.s3_logs.bucket_id
-  policy = jsonencode(templatefile("${path.module}/s3_cloudfront_logs_access.json.tftpl"), {
+  policy = jsonencode(templatefile("${path.module}/s3_cloudfront_logs_access.json.tftpl", {
     s3_arn = module.s3_logs.bucket_arn, 
     account_id = data.aws_caller_identity.current.account_id,
     cloudfront_arn = module.cloudfront.distribution_arn
-  })
+  }))
 }
 
 # Build the project - It requires you to have npm installed localy (no CICD here)
@@ -91,19 +91,19 @@ module "s3_logs_dr" {
 resource "aws_s3_bucket_policy" "allow_cloudfront_access_dr" {
   count = var.dr_region != "" ? (var.dr_region != data.aws_region.current.region ? 1 : 0) : 0
   bucket = module.s3_dr[0].bucket_id
-  policy = jsonencode(templatefile("${path.module}/s3_cloudfront_access.json.tftpl"), {
+  policy = jsonencode(templatefile("${path.module}/s3_cloudfront_access.json.tftpl", {
     s3_arn = module.s3_dr[0].bucket_arn, 
     cloudfront_arn = module.cloudfront.distribution_arn
-  })
+  }))
 }
 resource "aws_s3_bucket_policy" "s3_cloudfront_logs_access_dr" {
   count = var.dr_region != "" ? (var.dr_region != data.aws_region.current.region ? 1 : 0) : 0
   bucket = module.s3_logs_dr[0].bucket_id
-  policy = jsonencode(templatefile("${path.module}/s3_cloudfront_logs_access.json.tftpl"), {
+  policy = jsonencode(templatefile("${path.module}/s3_cloudfront_logs_access.json.tftpl", {
     s3_arn = module.s3_logs_dr[0].bucket_arn, 
     account_id = data.aws_caller_identity.current.account_id,
     cloudfront_arn = module.cloudfront.distribution_arn
-  })
+  }))
 }
 
 # We explicty don't create a synchro between the 2 buckets to share sources between region. 
