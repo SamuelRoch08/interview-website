@@ -16,3 +16,8 @@ output "bucket_regional_dns" {
   value       = aws_s3_bucket.bucket.bucket_regional_domain_name
   description = "The bucket region-specific domain name. The bucket domain name including the region name"
 }
+
+output "bucket_name" {
+  value       = aws_s3_bucket.bucket.bucket
+  description = "The bucket name."
+}

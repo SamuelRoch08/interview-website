@@ -36,3 +36,16 @@ provider "aws" {
     }
   }
 }
+
+provider "aws" {
+  alias   = "aws-dr"
+  region  = var.secondary_region
+  profile = var.profile
+
+  default_tags {
+    tags = {
+      "Owner"   = "Samuel Rochcongar"
+      "Project" = "WebApp"
+    }
+  }
+}

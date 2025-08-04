@@ -1,6 +1,6 @@
-variable "webapp_name" {
+variable "prefix_buckets_name" {
   type        = string
-  description = "Webapp name to deploy. Will be used for all sub-resources names."
+  description = "Prefix of buckets to use to create buckets names."
 }
 
 variable "webapp_src_code" {
@@ -11,10 +11,4 @@ variable "webapp_src_code" {
 variable "profile" {
   type        = string
   description = "Profile used for authentication to AWS. -- Can be changed or ignored if using a CICD or default profile."
-}
-
-variable "secondary_region" {
-  type = string 
-  default = ""
-  description = "Secondary region to deploy the DR into."
 }

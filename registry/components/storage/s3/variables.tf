@@ -5,12 +5,6 @@ variable "bucket_name" {
   type        = string
 }
 
-variable "bucket_region" {
-  description = "Region where to deploy the bucket. If omit, current session region is used."
-  type = string 
-  default = ""
-}
-
 variable "force_destroy" {
   type        = bool
   description = "Boolean that indicates all objects (including any locked objects) should be deleted from the bucket when the bucket is destroyed."

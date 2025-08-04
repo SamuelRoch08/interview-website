@@ -3,6 +3,11 @@ variable "primary_region" {
   description = "AWS primary region to use."
 }
 
+variable "secondary_region" {
+  type        = string
+  description = "AWS secondary region to use."
+}
+
 variable "profile" {
   type        = string
   default     = "sandbox"

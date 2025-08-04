@@ -3,9 +3,33 @@ variable "webapp_name" {
   description = "Webapp name used to define the origin ID."
 }
 
-variable "origin_dns" {
+variable "main_bucket_name" {
   type        = string
-  description = "DNS endpoint to cloudfront."
+  description = "Main bucket s3 to cloudfront."
+}
+
+variable "use_log_bucket" {
+  type = bool
+  default = false
+  description = "Use logging bucket or not."
+}
+
+variable "log_bucket_name" {
+  type        = string
+  default     = ""
+  description = "S3 bucket where to stream logs into."
+}
+
+variable "use_failover_bucket" {
+  type = bool
+  default = false
+  description = "Use failover bucket or not."
+}
+
+variable "failover_bucket_name" {
+  type        = string
+  description = "Bucket name to cloudfront as Failover of the primary. Omit will not create a failover structure."
+  default     = ""
 }
 
 variable "dns_aliases" {
@@ -52,12 +76,6 @@ variable "default_ttl" {
   type        = number
   description = "Default TTL for caching objects when not asked in the header by the request."
   default     = 3600
-}
-
-variable "s3_bucket_logs" {
-  type        = string
-  default     = ""
-  description = "S3 bucket where to stream logs into."
 }
 
 variable "extra_tags" {
