@@ -1,15 +1,14 @@
-variable "primary_region" {
+variable "prefix_buckets_name" {
   type        = string
-  description = "AWS primary region to use."
+  description = "Prefix of buckets to use to create buckets names."
 }
 
-variable "secondary_region" {
+variable "webapp_src_code" {
   type        = string
-  description = "AWS secondary region to use."
+  description = "Complete path to build code and publish it on ECS cluster."
 }
 
 variable "profile" {
   type        = string
-  default     = "sandbox"
   description = "Profile used for authentication to AWS. -- Can be changed or ignored if using a CICD or default profile."
 }

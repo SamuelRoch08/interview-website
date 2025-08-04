@@ -1,0 +1,1 @@
+Just a module to put the buckets in an envelop to easily deploy DR buckets. 

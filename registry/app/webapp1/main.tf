@@ -1,5 +1,5 @@
 module "network_foundations" {
-  source = "../../network/vpc-subnets-multi-az"
+  source = "../../components/network/vpc-subnets-multi-az"
 
   network_name   = var.webapp_name
   vpc_cidr       = var.vpc_cidr
@@ -10,15 +10,15 @@ module "network_foundations" {
 }
 
 module "ecs_cluster" {
-  source = "../../compute/ecs-on-asg"
+  source = "../../components/compute/ecs-on-asg"
 
   cluster_name       = "${var.webapp_name}-cluster"
   cluster_subnet_ids = module.network_foundations.apps_subnets_ids
 }
 
 module "ecr" {
-  source    = "../../compute/ecr"
-  repo_name = "${var.webapp_name}-ecr"
+  source       = "../../components/compute/ecr"
+  repo_name    = "${var.webapp_name}-ecr"
   force_delete = true
 }
 
