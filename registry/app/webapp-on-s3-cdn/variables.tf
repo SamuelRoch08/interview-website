@@ -12,3 +12,9 @@ variable "profile" {
   type        = string
   description = "Profile used for authentication to AWS. -- Can be changed or ignored if using a CICD or default profile."
 }
+
+variable "dr_region" {
+  type = string 
+  description = "DR region. If omit or equal to the current region, no DR will be created."
+  default = ""
+}
