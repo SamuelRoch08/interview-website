@@ -60,6 +60,16 @@ module "task_definition" {
   task_mem         = 512
   cp_compatibility = ["EC2"]
   cpu_arch         = "X86_64"
+}
+
+module "service_deployment" {
+  source = "../../components/compute/ecs-service"
+
+  project_name      = var.webapp_name
+  service_name      = "http"
+  ecs_cluster_arn   = module.ecs_cluster.ecs_arn
+  task_def_arn      = module.task_definition.task_def_arn
+  capacity_provider = module.ecs_cluster.ecs_capacity_provider_arn
 
 }
 

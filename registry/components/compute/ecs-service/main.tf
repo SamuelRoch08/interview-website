@@ -1,0 +1,28 @@
+resource "aws_ecs_service" "service" {
+  name                 = "mongodb"
+  cluster              = var.ecs_cluster_arn
+  task_definition      = var.task_def_arn
+  desired_count        = var.desired_count
+  iam_role             = var.task_arn_role != "" ? var.task_arn_role : null
+  force_new_deployment = true
+
+  capacity_provider_strategy {
+    base              = 1
+    capacity_provider = var.capacity_provider
+    weight            = 100
+  }
+
+  ordered_placement_strategy {
+    type  = var.placement_strategy
+    field = var.placement_strategy == "spread" ? "instanceId" : (var.placement_strategy == "binpack" ? "cpu" : null)
+  }
+
+  dynamic "load_balancer" {
+    for_each = var.lb_target_group_arn != "" ? [0] : []
+    content {
+      target_group_arn = var.lb_target_group_arn
+      container_name   = var.lb_container_name
+      container_port   = var.lb_container_port
+    }
+  }
+}
