@@ -5,6 +5,8 @@
 
 resource "aws_s3_bucket" "bucket" {
 
+  region = var.bucket_region != "" ? var.bucket_region : null
+
   bucket        = var.bucket_name
   force_destroy = var.force_destroy
   # Encryption options
