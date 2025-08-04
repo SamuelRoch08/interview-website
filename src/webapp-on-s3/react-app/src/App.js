@@ -25,7 +25,9 @@ function App() {
 
           Access logs are put in dedicated bucket for audit. <br />
 
-          Cache setting are tuned to 30s by default for demo, to update the website quickly. <br />
+          Cache setting are tuned to 30s by default for demo, to update the website quickly. <br /> 
+
+          SR. 
         </p>
         <img src={archi} className="App-archi" alt="archi" />
         <p>Last build on <b>{getDate()}</b></p>
