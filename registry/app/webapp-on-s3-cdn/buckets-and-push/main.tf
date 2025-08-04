@@ -16,12 +16,3 @@ module "s3_logs" {
   bucket_ownership_controls = "BucketOwnerPreferred"
   force_destroy             = true
 }
-
-resource "null_resource" "synchro_project" {
-  triggers = {
-    dir_sha1 = sha1(join("", [for f in fileset("${var.webapp_src_code}/src/", "**") : filesha1("${var.webapp_src_code}/src/${f}")]))
-  }
-  provisioner "local-exec" {
-    command = "aws s3 sync ${var.webapp_src_code}/build s3://${module.s3.bucket_id} --delete --profile ${var.profile}"
-  }
-}

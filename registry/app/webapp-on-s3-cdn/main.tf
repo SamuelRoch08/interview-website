@@ -15,7 +15,16 @@ module "s3_buckets" {
   prefix_buckets_name = var.webapp_name
   profile             = var.profile
   webapp_src_code     = var.webapp_src_code
-  depends_on          = [null_resource.build_project]
+}
+
+resource "null_resource" "synchro_project" {
+  triggers = {
+    dir_sha1 = sha1(join("", [for f in fileset("${var.webapp_src_code}/src/", "**") : filesha1("${var.webapp_src_code}/src/${f}")]))
+  }
+  provisioner "local-exec" {
+    command = "aws s3 sync ${var.webapp_src_code}/build s3://${module.s3_buckets.main_bucket} --delete --profile ${var.profile}"
+  }
+  depends_on = [ null_resource.build_project ]
 }
 
 module "s3_buckets_dr" {
@@ -27,7 +36,17 @@ module "s3_buckets_dr" {
   prefix_buckets_name = var.webapp_name
   profile             = var.profile
   webapp_src_code     = var.webapp_src_code
-  depends_on          = [null_resource.build_project]
+}
+
+resource "null_resource" "synchro_project_dr" {
+  count  = var.deploy_dr ? 1 : 0 
+  triggers = {
+    dir_sha1 = sha1(join("", [for f in fileset("${var.webapp_src_code}/src/", "**") : filesha1("${var.webapp_src_code}/src/${f}")]))
+  }
+  provisioner "local-exec" {
+    command = "aws s3 sync ${var.webapp_src_code}/build s3://${module.s3_buckets_dr[0].main_bucket} --delete --profile ${var.profile}"
+  }
+  depends_on = [ null_resource.build_project ]
 }
 
 # Create a distribution with default parameters 
@@ -45,16 +64,17 @@ module "cloudfront" {
   failover_bucket_regional_domain_name = var.deploy_dr ? module.s3_buckets_dr[0].main_bucket_regional_dns : ""
   failover_bucket_id                   = var.deploy_dr ? module.s3_buckets_dr[0].main_bucket_id : ""
   failover_bucket_arn                  = var.deploy_dr ? module.s3_buckets_dr[0].main_bucket_arn : ""
-  allowed_methods = var.deploy_dr ? ["GET", "HEAD"] : ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
+  allowed_methods                      = var.deploy_dr ? ["GET", "HEAD"] : ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
   default_ttl                          = 10
 }
 
 module "s3_replication" {
-  count = var.deploy_dr ? 1 : 0
-  source = "../../components/storage/s3-replication"
-  project_prefix = var.webapp_name
-  source_bucket_name = module.s3_buckets.log_bucket
-  source_bucket_arn = module.s3_buckets.log_bucket_arn
+  count                   = var.deploy_dr ? 1 : 0
+  source                  = "../../components/storage/s3-replication"
+  project_prefix          = var.webapp_name
+  source_bucket_name      = module.s3_buckets.log_bucket
+  source_bucket_arn       = module.s3_buckets.log_bucket_arn
   destination_bucket_name = module.s3_buckets_dr[0].log_bucket
-  destination_bucket_arn = module.s3_buckets_dr[0].log_bucket_arn
+  destination_bucket_arn  = module.s3_buckets_dr[0].log_bucket_arn
+  depends_on              = [module.s3_buckets_dr[0], module.s3_buckets] # We need to be sure versioning is enabled 
 }
