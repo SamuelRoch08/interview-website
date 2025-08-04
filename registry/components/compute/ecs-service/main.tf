@@ -1,5 +1,5 @@
 resource "aws_ecs_service" "service" {
-  name                 = "mongodb"
+  name                 = var.service_name
   cluster              = var.ecs_cluster_arn
   task_definition      = var.task_def_arn
   desired_count        = var.desired_count
