@@ -63,6 +63,12 @@ variable "os_family" {
   }
 }
 
+variable "healthcheck_command" {
+  type = list(string)
+  description = "Command (in list of string) as healthcheck."
+  default = [ "CMD-SHELL", "curl -f http://localhost/ || exit 1" ]
+}
+
 variable "extra_tags" {
   type        = map(string)
   description = "Extra tags to add to any resources."

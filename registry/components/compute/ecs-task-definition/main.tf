@@ -38,6 +38,9 @@ resource "aws_ecs_task_definition" "service" {
           hostPort      = var.host_port
         }
       ]
+      healthCheck = {
+        command = var.healthcheck_command
+      }
     }
   ])
   execution_role_arn = aws_iam_role.task_exec_role.arn
