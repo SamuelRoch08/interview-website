@@ -13,8 +13,14 @@ variable "profile" {
   description = "Profile used for authentication to AWS. -- Can be changed or ignored if using a CICD or default profile."
 }
 
+variable "deploy_dr" {
+  type        = bool
+  default     = false
+  description = "Deploy DR in secondary region if needed."
+}
+
 variable "secondary_region" {
-  type = string 
-  default = ""
+  type        = string
+  default     = "eu-central-1"
   description = "Secondary region to deploy the DR into."
 }

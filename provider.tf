@@ -38,7 +38,7 @@ provider "aws" {
 }
 
 provider "aws" {
-  alias   = "aws-dr"
+  alias   = "dr"
   region  = var.secondary_region
   profile = var.profile
 

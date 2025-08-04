@@ -26,9 +26,21 @@ variable "use_failover_bucket" {
   description = "Use failover bucket or not."
 }
 
-variable "failover_bucket_name" {
+variable "failover_bucket_regional_domain_name" {
   type        = string
-  description = "Bucket name to cloudfront as Failover of the primary. Omit will not create a failover structure."
+  description = "Bucket regional name for failover."
+  default     = ""
+}
+
+variable "failover_bucket_id" {
+  type        = string
+  description = "Bucket failover name."
+  default     = ""
+}
+
+variable "failover_bucket_arn" {
+  type        = string
+  description = "Bucket failover arn."
   default     = ""
 }
 

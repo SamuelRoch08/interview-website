@@ -19,8 +19,8 @@ module "s3_buckets" {
 }
 
 module "s3_buckets_dr" {
-  count = var.secondary_region != "" ? 1 : 0 
-  source              = "./buckets-and-push"
+  count  = var.deploy_dr ? 1 : 0
+  source = "./buckets-and-push"
   providers = {
     aws = aws.dr
   }
@@ -32,11 +32,20 @@ module "s3_buckets_dr" {
 
 # Create a distribution with default parameters 
 module "cloudfront" {
-  source           = "../../components/network/cloudfront-s3"
-  webapp_name      = var.webapp_name
-  main_bucket_name = module.s3_buckets.main_bucket
-  use_log_bucket   = true
-  log_bucket_name  = module.s3_buckets.log_bucket
-  default_ttl      = 10
+  source = "../../components/network/cloudfront-s3"
+  providers = {
+    aws          = aws
+    aws.failover = aws.dr
+  }
+  webapp_name                          = var.webapp_name
+  main_bucket_name                     = module.s3_buckets.main_bucket
+  use_log_bucket                       = true
+  log_bucket_name                      = module.s3_buckets.log_bucket
+  use_failover_bucket                  = var.deploy_dr
+  failover_bucket_regional_domain_name = var.deploy_dr ? module.s3_buckets_dr[0].main_bucket_regional_dns : ""
+  failover_bucket_id                   = var.deploy_dr ? module.s3_buckets_dr[0].main_bucket_id : ""
+  failover_bucket_arn                  = var.deploy_dr ? module.s3_buckets_dr[0].main_bucket_arn : ""
+  allowed_methods = var.deploy_dr ? ["GET", "HEAD"] : ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
+  default_ttl                          = 10
 }
 

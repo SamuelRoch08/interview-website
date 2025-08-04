@@ -37,7 +37,7 @@ resource "aws_cloudfront_distribution" "distribution" {
   dynamic "origin" {
     for_each = var.use_failover_bucket ? [0] : []
     content {
-      domain_name              = data.aws_s3_bucket.failover_bucket[0].bucket_regional_domain_name
+      domain_name              = var.failover_bucket_regional_domain_name
       origin_access_control_id = aws_cloudfront_origin_access_control.oac.id
       origin_id                = "${var.webapp_name}-failover"
     }
@@ -59,7 +59,7 @@ resource "aws_cloudfront_distribution" "distribution" {
   default_cache_behavior {
     allowed_methods        = var.allowed_methods
     cached_methods         = var.cached_methods
-    target_origin_id       = var.failover_bucket_name != "" ? "${var.webapp_name}-glob" : "${var.webapp_name}-prim"
+    target_origin_id       = var.use_failover_bucket ? "${var.webapp_name}-glob" : "${var.webapp_name}-prim"
     viewer_protocol_policy = "allow-all"
     min_ttl                = var.min_ttl
     default_ttl            = var.default_ttl
@@ -100,10 +100,11 @@ resource "aws_s3_bucket_policy" "allow_cloudfront_access" {
 }
 
 resource "aws_s3_bucket_policy" "allow_cloudfront_access_failover" {
-  count  = var.use_failover_bucket ? 1 : 0
-  bucket = data.aws_s3_bucket.failover_bucket[0].id
+  count    = var.use_failover_bucket ? 1 : 0
+  provider = aws.failover
+  bucket   = var.failover_bucket_id
   policy = templatefile("${path.module}/s3_cloudfront_access.json.tftpl", {
-    s3_arn         = data.aws_s3_bucket.failover_bucket[0].arn,
+    s3_arn         = var.failover_bucket_arn,
     cloudfront_arn = aws_cloudfront_distribution.distribution.arn
   })
 }
