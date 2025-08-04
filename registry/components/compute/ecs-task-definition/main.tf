@@ -45,7 +45,6 @@ resource "aws_ecs_task_definition" "service" {
   ])
   execution_role_arn = aws_iam_role.task_exec_role.arn
 
-  requires_compatibilities = var.cp_compatibility
   runtime_platform {
     cpu_architecture        = var.cpu_arch
     operating_system_family = var.os_family

@@ -18,11 +18,6 @@ variable "task_def_arn" {
   description = "Task definition ARN reference."
 }
 
-variable "capacity_provider" {
-  type        = string
-  description = "Capacity provider used for the service."
-}
-
 variable "lb_target_group_arn" {
   type        = string
   description = "Target Group ARN to link to the service if we need LB management."
@@ -53,13 +48,19 @@ variable "task_arn_role" {
   default     = ""
 }
 
+variable "launch_type" {
+  type        = string
+  description = "Launch type. Either EC2, FARGATE, or EXTERNAL."
+  default     = "EC2"
+}
+
 variable "placement_strategy" {
-  type = string 
+  type        = string
   description = "Strategy to place the taks on the nodes."
-  default = "spread"
+  default     = "spread"
   validation {
     error_message = "placement_strategy must be one of binpack, random, or spread."
-    condition = contains(["binpack", "random", "spread"], var.placement_strategy)
+    condition     = contains(["binpack", "random", "spread"], var.placement_strategy)
   }
 }
 

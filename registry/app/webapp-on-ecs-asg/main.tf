@@ -53,13 +53,12 @@ resource "docker_registry_image" "webapp" {
 module "task_definition" {
   source = "../../components/compute/ecs-task-definition"
 
-  project_name     = var.webapp_name
-  container_name   = "http"
-  image_uri        = docker_image.webapp_image.name
-  task_cpu         = 256
-  task_mem         = 512
-  cp_compatibility = ["EC2"]
-  cpu_arch         = "X86_64"
+  project_name   = var.webapp_name
+  container_name = "http"
+  image_uri      = docker_image.webapp_image.name
+  task_cpu       = 256
+  task_mem       = 512
+  cpu_arch       = "X86_64"
 }
 
 module "service_deployment" {
@@ -69,7 +68,5 @@ module "service_deployment" {
   service_name      = "http"
   ecs_cluster_arn   = module.ecs_cluster.ecs_arn
   task_def_arn      = module.task_definition.task_def_arn
-  capacity_provider = module.ecs_cluster.ecs_capacity_provider_arn
-
 }
 

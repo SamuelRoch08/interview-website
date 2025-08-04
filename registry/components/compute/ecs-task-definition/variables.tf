@@ -37,12 +37,6 @@ variable "task_mem" {
   default     = 1024
 }
 
-variable "cp_compatibility" {
-  type        = list(string)
-  description = "Capacity provider compatible. Either EC2 or FARGATE."
-  default     = ["EC2"]
-}
-
 variable "cpu_arch" {
   type        = string
   description = "Compatible CPU architecture."
@@ -64,9 +58,9 @@ variable "os_family" {
 }
 
 variable "healthcheck_command" {
-  type = list(string)
+  type        = list(string)
   description = "Command (in list of string) as healthcheck."
-  default = [ "CMD-SHELL", "curl -f http://localhost/ || exit 1" ]
+  default     = ["CMD-SHELL", "curl -f http://localhost/ || exit 1"]
 }
 
 variable "extra_tags" {
