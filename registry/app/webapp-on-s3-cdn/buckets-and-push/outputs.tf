@@ -24,3 +24,8 @@ output "main_bucket_regional_dns" {
 output "log_bucket" {
   value = module.s3_logs.bucket_name
 }
+
+output "log_bucket_arn" {
+  value       = module.s3_logs.bucket_arn
+  description = "ARN of the bucket. Will be of format arn:aws:s3:::bucketname"
+}

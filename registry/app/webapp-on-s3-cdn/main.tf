@@ -49,3 +49,12 @@ module "cloudfront" {
   default_ttl                          = 10
 }
 
+module "s3_replication" {
+  count = var.deploy_dr ? 1 : 0
+  source = "../../components/storage/s3-replication"
+  project_prefix = var.webapp_name
+  source_bucket_name = module.s3_buckets.log_bucket
+  source_bucket_arn = module.s3_buckets.log_bucket_arn
+  destination_bucket_name = module.s3_buckets_dr[0].log_bucket
+  destination_bucket_arn = module.s3_buckets_dr[0].log_bucket_arn
+}
