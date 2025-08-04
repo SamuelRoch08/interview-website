@@ -64,9 +64,14 @@ module "task_definition" {
 module "service_deployment" {
   source = "../../components/compute/ecs-service"
 
-  project_name      = var.webapp_name
-  service_name      = "http"
-  ecs_cluster_arn   = module.ecs_cluster.ecs_arn
-  task_def_arn      = module.task_definition.task_def_arn
+  project_name        = var.webapp_name
+  service_name        = "http"
+  ecs_cluster_arn     = module.ecs_cluster.ecs_arn
+  task_def_arn        = module.task_definition.task_def_arn
+  lb_target_group_arn = module.ecs_alb.target_group_arn
+  lb_container_name   = "http"
+  lb_container_port   = 80
+  deploy_min_per      = 50
+  desired_count       = 2
 }
 

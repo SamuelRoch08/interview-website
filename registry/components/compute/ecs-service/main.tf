@@ -1,11 +1,13 @@
 resource "aws_ecs_service" "service" {
-  name                 = var.service_name
-  cluster              = var.ecs_cluster_arn
-  task_definition      = var.task_def_arn
-  desired_count        = var.desired_count
-  iam_role             = var.task_arn_role != "" ? var.task_arn_role : null
-  launch_type          = var.launch_type
-  force_new_deployment = true
+  name                               = var.service_name
+  cluster                            = var.ecs_cluster_arn
+  task_definition                    = var.task_def_arn
+  desired_count                      = var.desired_count
+  iam_role                           = var.task_arn_role != "" ? var.task_arn_role : null
+  launch_type                        = var.launch_type
+  force_new_deployment               = true
+  deployment_minimum_healthy_percent = var.deploy_min_per
+  deployment_maximum_percent         = var.deploy_max_per
 
   ordered_placement_strategy {
     type  = var.placement_strategy

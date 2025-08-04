@@ -54,6 +54,18 @@ variable "launch_type" {
   default     = "EC2"
 }
 
+variable "deploy_min_per" {
+  type        = number
+  description = "Percentage Min that the services must be available for the a deployment update."
+  default     = 100
+}
+
+variable "deploy_max_per" {
+  type        = number
+  description = "Percentage Max that the services must be available for the a deployment update."
+  default     = 200
+}
+
 variable "placement_strategy" {
   type        = string
   description = "Strategy to place the taks on the nodes."
