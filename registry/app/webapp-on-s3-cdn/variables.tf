@@ -1,0 +1,26 @@
+variable "webapp_name" {
+  type        = string
+  description = "Webapp name to deploy. Will be used for all sub-resources names."
+}
+
+variable "webapp_src_code" {
+  type        = string
+  description = "Complete path to build code and publish it on ECS cluster."
+}
+
+variable "profile" {
+  type        = string
+  description = "Profile used for authentication to AWS. -- Can be changed or ignored if using a CICD or default profile."
+}
+
+variable "deploy_dr" {
+  type        = bool
+  default     = false
+  description = "Deploy DR in secondary region if needed."
+}
+
+variable "secondary_region" {
+  type        = string
+  default     = "eu-central-1"
+  description = "Secondary region to deploy the DR into."
+}

@@ -7,6 +7,14 @@ terraform {
       source  = "hashicorp/aws"
       version = "6.7.0"
     }
+    docker = {
+      source  = "kreuzwerker/docker"
+      version = ">= 3.6.2"
+    }
+    null = {
+      source  = "hashicorp/null"
+      version = ">= 3.2.4"
+    }
   }
 
   backend "s3" {
@@ -19,7 +27,20 @@ terraform {
 
 provider "aws" {
   region  = var.primary_region
-  profile = "sandbox"
+  profile = var.profile
+
+  default_tags {
+    tags = {
+      "Owner"   = "Samuel Rochcongar"
+      "Project" = "WebApp"
+    }
+  }
+}
+
+provider "aws" {
+  alias   = "dr"
+  region  = var.secondary_region
+  profile = var.profile
 
   default_tags {
     tags = {
