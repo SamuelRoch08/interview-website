@@ -5,7 +5,7 @@ resource "aws_ecs_service" "service" {
   desired_count                      = var.desired_count
   iam_role                           = var.task_arn_role != "" ? var.task_arn_role : null
   launch_type                        = var.launch_type
-  force_new_deployment               = true
+  force_new_deployment               = var.force_deploy
   deployment_minimum_healthy_percent = var.deploy_min_per
   deployment_maximum_percent         = var.deploy_max_per
 

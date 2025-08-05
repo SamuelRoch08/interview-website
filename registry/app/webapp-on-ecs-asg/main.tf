@@ -36,7 +36,7 @@ module "ecr" {
 }
 
 resource "docker_image" "webapp_image" {
-  name = "${module.ecr.ecr_url}:latest"
+  name = "${module.ecr.ecr_url}:${substr(sha1(join("", [for f in fileset(var.webapp_src_code, "**") : filesha1("${var.webapp_src_code}/${f}")])), 0, 12)}"
   build {
     context = var.webapp_src_code
   }
@@ -73,5 +73,6 @@ module "service_deployment" {
   lb_container_port   = 80
   deploy_min_per      = 50
   desired_count       = 2
+  force_deploy        = true 
 }
 

@@ -76,6 +76,12 @@ variable "placement_strategy" {
   }
 }
 
+variable "force_deploy" {
+  type        = bool
+  description = "Force redeployment of service."
+  default     = false
+}
+
 variable "extra_tags" {
   type        = map(string)
   description = "Extra tags to add to any resources."
