@@ -17,7 +17,7 @@ data "aws_iam_policy_document" "logging" {
   statement {
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::${lookup(local.elb_accounts,data.aws_region.current.region)}:root"] # https://docs.aws.amazon.com/elasticloadbalancing/latest/application/enable-access-logging.html#attach-bucket-policy
+      identifiers = ["arn:aws:iam::${lookup(local.elb_accounts, data.aws_region.current.region)}:root"] # https://docs.aws.amazon.com/elasticloadbalancing/latest/application/enable-access-logging.html#attach-bucket-policy
     }
 
     actions = [
