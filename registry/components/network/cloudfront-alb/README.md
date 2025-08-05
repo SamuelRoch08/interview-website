@@ -1,4 +1,4 @@
-# vpc-and-subnets-single-nat
+# cloudfront-alb
 
 ## Description 
 
@@ -33,7 +33,6 @@ No modules.
 | Name | Type |
 |------|------|
 | [aws_cloudfront_distribution.distribution](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_distribution) | resource |
-| [aws_cloudfront_origin_access_control.oac](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_origin_access_control) | resource |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 | [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
 
@@ -46,11 +45,12 @@ No modules.
 | <a name="input_default_ttl"></a> [default\_ttl](#input\_default\_ttl) | Default TTL for caching objects when not asked in the header by the request. | `number` | `3600` | no |
 | <a name="input_dns_aliases"></a> [dns\_aliases](#input\_dns\_aliases) | List of other DNS aliases used to reach the distrib. | `list(string)` | `[]` | no |
 | <a name="input_extra_tags"></a> [extra\_tags](#input\_extra\_tags) | Extra tags to add to any resources. | `map(string)` | `{}` | no |
+| <a name="input_failover_dns"></a> [failover\_dns](#input\_failover\_dns) | DNS for failover. | `string` | `""` | no |
+| <a name="input_main_dns"></a> [main\_dns](#input\_main\_dns) | Main DNS to cloudfront. | `string` | n/a | yes |
 | <a name="input_max_ttl"></a> [max\_ttl](#input\_max\_ttl) | Maximum TTL allowed for caching objects when explictly asked in the header by the request. | `number` | `86400` | no |
 | <a name="input_min_ttl"></a> [min\_ttl](#input\_min\_ttl) | Minimum TTL allowed for caching objects when explictly asked in the header by the request. | `number` | `0` | no |
-| <a name="input_origin_dns"></a> [origin\_dns](#input\_origin\_dns) | DNS endpoint to cloudfront. | `string` | n/a | yes |
 | <a name="input_root_index_file"></a> [root\_index\_file](#input\_root\_index\_file) | Root file as entrypoint for web access. | `string` | `"index.html"` | no |
-| <a name="input_s3_bucket_logs"></a> [s3\_bucket\_logs](#input\_s3\_bucket\_logs) | S3 bucket where to stream logs into. | `string` | `""` | no |
+| <a name="input_use_failover_dns"></a> [use\_failover\_dns](#input\_use\_failover\_dns) | Use failover DNS or not. | `bool` | `false` | no |
 | <a name="input_webapp_name"></a> [webapp\_name](#input\_webapp\_name) | Webapp name used to define the origin ID. | `string` | n/a | yes |
 | <a name="input_whitelist_locations"></a> [whitelist\_locations](#input\_whitelist\_locations) | List of countries enabled to reach the distribution. | `list(string)` | <pre>[<br>  "FR",<br>  "CH",<br>  "US"<br>]</pre> | no |
 

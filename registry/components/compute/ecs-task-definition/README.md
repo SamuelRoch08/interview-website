@@ -32,33 +32,31 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [aws_autoscaling_group.cluster](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/autoscaling_group) | resource |
-| [aws_cloudwatch_log_group.cluster](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
-| [aws_ecs_capacity_provider.cluster](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_capacity_provider) | resource |
-| [aws_ecs_cluster.cluster](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_cluster) | resource |
-| [aws_ecs_cluster_capacity_providers.cluster](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_cluster_capacity_providers) | resource |
-| [aws_iam_instance_profile.ec2_role_for_ecs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_instance_profile) | resource |
-| [aws_iam_role.ec2_role_for_ecs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
-| [aws_iam_role_policy_attachment.ecs_for_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
-| [aws_iam_role_policy_attachment.ssm_for_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
-| [aws_launch_template.cluster](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/launch_template) | resource |
-| [aws_security_group.cluster](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
-| [aws_security_group_rule.inbound_http](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
-| [aws_security_group_rule.outbound_all](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_ecs_task_definition.service](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_task_definition) | resource |
+| [aws_iam_role.task_exec_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
+| [aws_iam_role_policy_attachment.task_exec_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
-| [aws_subnet.app_a_subnet](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnet) | data source |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_cluster_max_size"></a> [cluster\_max\_size](#input\_cluster\_max\_size) | Cluster maximum size. | `number` | `3` | no |
-| <a name="input_cluster_min_size"></a> [cluster\_min\_size](#input\_cluster\_min\_size) | Cluster minimum size. | `number` | `1` | no |
-| <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | Cluster name. | `string` | n/a | yes |
-| <a name="input_cluster_subnet_ids"></a> [cluster\_subnet\_ids](#input\_cluster\_subnet\_ids) | List of subnets IDs for the cluster servers. | `list(string)` | n/a | yes |
+| <a name="input_container_name"></a> [container\_name](#input\_container\_name) | Container name inside the task def. | `string` | n/a | yes |
+| <a name="input_container_port"></a> [container\_port](#input\_container\_port) | Container port. | `number` | `80` | no |
+| <a name="input_cpu_arch"></a> [cpu\_arch](#input\_cpu\_arch) | Compatible CPU architecture. | `string` | `"X86_64"` | no |
 | <a name="input_extra_tags"></a> [extra\_tags](#input\_extra\_tags) | Extra tags to add to any resources. | `map(string)` | `{}` | no |
+| <a name="input_host_port"></a> [host\_port](#input\_host\_port) | Host port. If 0, the port is random so multiple tasks can run on the same host. | `number` | `0` | no |
+| <a name="input_image_uri"></a> [image\_uri](#input\_image\_uri) | Image URI. | `string` | n/a | yes |
+| <a name="input_os_family"></a> [os\_family](#input\_os\_family) | Target OS family. | `string` | `"LINUX"` | no |
+| <a name="input_project_name"></a> [project\_name](#input\_project\_name) | Project name for resources names. | `string` | n/a | yes |
+| <a name="input_task_cpu"></a> [task\_cpu](#input\_task\_cpu) | Number of CPU units. 256 = 0.25vCPU, 512 = 0.5vCPU etc. | `number` | `512` | no |
+| <a name="input_task_mem"></a> [task\_mem](#input\_task\_mem) | Number of Mem in MB. | `number` | `1024` | no |
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_task_def_arn"></a> [task\_def\_arn](#output\_task\_def\_arn) | n/a |
+| <a name="output_task_def_name"></a> [task\_def\_name](#output\_task\_def\_name) | n/a |
+| <a name="output_task_def_revision"></a> [task\_def\_revision](#output\_task\_def\_revision) | n/a |
 <!-- END_TF_DOCS -->

@@ -1,8 +1,15 @@
-# vpc-and-subnets-single-nat
+# webapp-on-ecs-asg
 
 ## Description 
 
-Deploy a new webapp.
+Deploy webapp on ECS. 
+
+The secondary region is smaller than the primary (here 1node and 1 replica (pilot light)). 
+
+Some considerations : 
+- We explictly push the docker image in the 2 ECR instead of a replication because we wan't to keep to ability to push code updates if the primary zone is not available. 
+- Scan is not activated on the ECR because it's a sandbox.  
+- Cluster is made of small instances, on SPOT for cost reason. We could change these parameters. 
 
 ![Module Architecture](.assets/archi.png)
 
