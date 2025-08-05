@@ -35,6 +35,7 @@ module "ecr" {
   force_delete = true
 }
 
+# We base the image tag on the src code sha1. If we modify the code, the tag is modified, so the task def also and it updates the service (deploys the mew updated code)
 resource "docker_image" "webapp_image" {
   name = "${module.ecr.ecr_url}:${substr(sha1(join("", [for f in fileset(var.webapp_src_code, "**") : filesha1("${var.webapp_src_code}/${f}")])), 0, 12)}"
   build {
