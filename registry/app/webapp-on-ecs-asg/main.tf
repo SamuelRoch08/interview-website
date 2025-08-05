@@ -26,3 +26,12 @@ module "app_secondary_region" {
   data_subnets        = ["10.0.21.0/24", "10.0.22.0/24"]
 }
 
+module "cloudfront" {
+  source           = "../../components/network/cloudfront-alb"
+  webapp_name      = var.webapp_name
+  main_dns         = module.app_main_region.lb_endpoint
+  use_failover_dns = true
+  failover_dns     = module.app_secondary_region.lb_endpoint
+  allowed_methods  = ["GET", "HEAD"]
+  default_ttl      = 10
+}
