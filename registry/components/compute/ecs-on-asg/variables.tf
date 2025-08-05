@@ -16,21 +16,21 @@ variable "cluster_min_size" {
 }
 
 variable "cluster_target_size" {
-  type = number 
+  type        = number
   description = "Cluster target size."
-  default = 2
+  default     = 2
 }
 
 variable "cluster_instance_types" {
-  type = string 
+  type        = string
   description = "Target instances types."
-  default = "t3.micro"
+  default     = "t3.micro"
 }
 
 variable "cluster_instance_ami" {
-  type = string
+  type        = string
   description = "Target AMI for instances."
-  default = "ami-08c9a28b806bde705" # al2023-ami-ecs-hvm-2023.0.20250730-kernel-6.1-x86_64
+  default     = "ami-08c9a28b806bde705" # al2023-ami-ecs-hvm-2023.0.20250730-kernel-6.1-x86_64
 }
 
 variable "cluster_subnet_ids" {
@@ -42,9 +42,6 @@ variable "allowed_inbound_cidr" {
   type        = list(string)
   description = "Allowed inbound CIDRs that can access the nodes."
 }
-
-
-
 
 variable "extra_tags" {
   type        = map(string)
