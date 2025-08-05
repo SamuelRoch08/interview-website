@@ -40,8 +40,6 @@ No modules.
 | [aws_s3_bucket_policy.s3_cloudfront_logs_access](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy) | resource |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 | [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
-| [aws_s3_bucket.log_bucket](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/s3_bucket) | data source |
-| [aws_s3_bucket.origin_bucket](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/s3_bucket) | data source |
 
 ## Inputs
 
@@ -53,15 +51,20 @@ No modules.
 | <a name="input_dns_aliases"></a> [dns\_aliases](#input\_dns\_aliases) | List of other DNS aliases used to reach the distrib. | `list(string)` | `[]` | no |
 | <a name="input_extra_tags"></a> [extra\_tags](#input\_extra\_tags) | Extra tags to add to any resources. | `map(string)` | `{}` | no |
 | <a name="input_failover_bucket_arn"></a> [failover\_bucket\_arn](#input\_failover\_bucket\_arn) | Bucket failover arn. | `string` | `""` | no |
-| <a name="input_failover_bucket_id"></a> [failover\_bucket\_id](#input\_failover\_bucket\_id) | Bucket failover name. | `string` | `""` | no |
+| <a name="input_failover_bucket_id"></a> [failover\_bucket\_id](#input\_failover\_bucket\_id) | Bucket failover ID. | `string` | `""` | no |
 | <a name="input_failover_bucket_regional_domain_name"></a> [failover\_bucket\_regional\_domain\_name](#input\_failover\_bucket\_regional\_domain\_name) | Bucket regional name for failover. | `string` | `""` | no |
-| <a name="input_log_bucket_name"></a> [log\_bucket\_name](#input\_log\_bucket\_name) | S3 bucket where to stream logs into. | `string` | `""` | no |
+| <a name="input_log_bucket_arn"></a> [log\_bucket\_arn](#input\_log\_bucket\_arn) | Bucket log arn. | `string` | `""` | no |
+| <a name="input_log_bucket_domain_name"></a> [log\_bucket\_domain\_name](#input\_log\_bucket\_domain\_name) | Bucket log domain name. | `string` | `""` | no |
+| <a name="input_log_bucket_id"></a> [log\_bucket\_id](#input\_log\_bucket\_id) | Bucket log ID. | `string` | `""` | no |
+| <a name="input_main_bucket_arn"></a> [main\_bucket\_arn](#input\_main\_bucket\_arn) | Bucket main ARN. | `string` | n/a | yes |
+| <a name="input_main_bucket_id"></a> [main\_bucket\_id](#input\_main\_bucket\_id) | Bucket main ID. | `string` | n/a | yes |
 | <a name="input_main_bucket_name"></a> [main\_bucket\_name](#input\_main\_bucket\_name) | Main bucket s3 to cloudfront. | `string` | n/a | yes |
 | <a name="input_max_ttl"></a> [max\_ttl](#input\_max\_ttl) | Maximum TTL allowed for caching objects when explictly asked in the header by the request. | `number` | `86400` | no |
 | <a name="input_min_ttl"></a> [min\_ttl](#input\_min\_ttl) | Minimum TTL allowed for caching objects when explictly asked in the header by the request. | `number` | `0` | no |
+| <a name="input_origin_bucket_regional_domain_name"></a> [origin\_bucket\_regional\_domain\_name](#input\_origin\_bucket\_regional\_domain\_name) | Main bucket s3 to cloudfront with regional DNS. | `string` | n/a | yes |
 | <a name="input_root_index_file"></a> [root\_index\_file](#input\_root\_index\_file) | Root file as entrypoint for web access. | `string` | `"index.html"` | no |
 | <a name="input_use_failover_bucket"></a> [use\_failover\_bucket](#input\_use\_failover\_bucket) | Use failover bucket or not. | `bool` | `false` | no |
-| <a name="input_use_log_bucket"></a> [use\_log\_bucket](#input\_use\_log\_bucket) | Use logging bucket or not. | `bool` | `false` | no |
+| <a name="input_use_log_bucket"></a> [use\_log\_bucket](#input\_use\_log\_bucket) | Use log bucket or not. | `bool` | `false` | no |
 | <a name="input_webapp_name"></a> [webapp\_name](#input\_webapp\_name) | Webapp name used to define the origin ID. | `string` | n/a | yes |
 | <a name="input_whitelist_locations"></a> [whitelist\_locations](#input\_whitelist\_locations) | List of countries enabled to reach the distribution. | `list(string)` | <pre>[<br>  "FR",<br>  "CH",<br>  "US"<br>]</pre> | no |
 
