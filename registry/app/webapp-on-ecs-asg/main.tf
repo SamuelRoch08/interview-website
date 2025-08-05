@@ -15,7 +15,7 @@ module "ecs_alb" {
   project_name             = var.webapp_name
   is_internal              = false
   lb_subnets               = module.network_foundations.publics_subnets_ids
-  enable_lb_access_logging = false
+  enable_lb_access_logging = true
   listener_port            = 80
   listener_protocol        = "HTTP"
   extra_tags               = var.wepapp_tags
@@ -74,6 +74,6 @@ module "service_deployment" {
   lb_container_port   = 80
   deploy_min_per      = 50
   desired_count       = 2
-  force_deploy        = true 
+  force_deploy        = true
 }
 

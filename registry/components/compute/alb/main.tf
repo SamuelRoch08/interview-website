@@ -31,6 +31,13 @@ module "s3_logs" {
   force_destroy = true
 }
 
+resource "aws_s3_bucket_policy" "allow_logging" {
+  count  = var.enable_lb_access_logging ? 1 : 0
+  bucket = module.s3_logs[0].bucket_id
+  policy = data.aws_iam_policy_document.logging[0].json
+}
+
+
 resource "aws_lb_target_group" "tg" {
   name                 = "${var.project_name}-lb-alb-tg"
   target_type          = "instance"
@@ -56,7 +63,6 @@ resource "aws_lb" "lb" {
       bucket  = module.s3_logs[0].bucket_id
       enabled = true
     }
-
   }
   tags = var.extra_tags
 }
