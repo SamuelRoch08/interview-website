@@ -24,6 +24,18 @@ For more info on webapp1 : Check its [README.me](./registry/app/webapp-on-ecs-as
 
 For more info on webapp2 : Check its [README.me](./registry/app/webapp-on-s3-cdn/README.md)
 
+## Requirements
+
+- You need a local setup of Terraform and define your profile (here `sandbox`)
+
+- Extra local tools to build the applications. 
+  - For webapp1 (ecs) : 
+    - docker / docker-desktop : to build the image, use the docker provider 
+  - For webapp2 (s3) : 
+    - npm / yarn tools : to build the react application for production and create the static website file. If not possible, feel free to update the code in order to have a true static HTML code. 
+    - aws-cli : For some reason, pushing the static files into the s3 bucket is easier with the CLI (otherwise, it requires 2x terraform apply : 1 to build, 1 to push)
+
+
 ## Develop
 
 To contribute to this project, create a codespace here, or in your VSCode, with all the tools needed to develop (strongly recommanded).
