@@ -92,8 +92,8 @@ resource "aws_ecs_cluster" "cluster" {
 # The launch template that will be used by the ASG and, in fine, the Cluster 
 resource "aws_launch_template" "cluster" {
   name_prefix            = "${var.cluster_name}-lt"
-  image_id               = "ami-08c9a28b806bde705" # al2023-ami-ecs-hvm-2023.0.20250730-kernel-6.1-x86_64
-  instance_type          = "t3.micro"
+  image_id               = var.cluster_instance_ami
+  instance_type          = var.cluster_instance_types
   vpc_security_group_ids = [aws_security_group.cluster.id]
 
   iam_instance_profile {
@@ -148,7 +148,7 @@ resource "aws_ecs_capacity_provider" "cluster" {
       maximum_scaling_step_size = var.cluster_max_size
       minimum_scaling_step_size = var.cluster_min_size
       status                    = "ENABLED"
-      target_capacity           = 2
+      target_capacity           = var.cluster_target_size
       instance_warmup_period    = 60
     }
   }
