@@ -8,18 +8,49 @@ variable "main_bucket_name" {
   description = "Main bucket s3 to cloudfront."
 }
 
+variable "main_bucket_id" {
+  type        = string
+  description = "Bucket main ID."
+}
+variable "main_bucket_arn" {
+  type        = string
+  description = "Bucket main ARN."
+}
+
+variable "origin_bucket_regional_domain_name" {
+  type        = string
+  description = "Main bucket s3 to cloudfront with regional DNS."
+}
+# # # # # # # # # # # # # #
+# Optional Log Bucket 
+# # # # # # # # # # # # # #
 variable "use_log_bucket" {
   type        = bool
   default     = false
-  description = "Use logging bucket or not."
+  description = "Use log bucket or not."
 }
 
-variable "log_bucket_name" {
+variable "log_bucket_domain_name" {
   type        = string
+  description = "Bucket log domain name."
   default     = ""
-  description = "S3 bucket where to stream logs into."
 }
 
+variable "log_bucket_id" {
+  type        = string
+  description = "Bucket log ID."
+  default     = ""
+}
+
+variable "log_bucket_arn" {
+  type        = string
+  description = "Bucket log arn."
+  default     = ""
+}
+
+# # # # # # # # # # # # # #
+# Optional Failover Bucket 
+# # # # # # # # # # # # # #
 variable "use_failover_bucket" {
   type        = bool
   default     = false
@@ -34,7 +65,7 @@ variable "failover_bucket_regional_domain_name" {
 
 variable "failover_bucket_id" {
   type        = string
-  description = "Bucket failover name."
+  description = "Bucket failover ID."
   default     = ""
 }
 
@@ -44,6 +75,9 @@ variable "failover_bucket_arn" {
   default     = ""
 }
 
+# # # # # # # # # # # # # #
+# Distribution parameters 
+# # # # # # # # # # # # # #
 variable "dns_aliases" {
   type        = list(string)
   description = "List of other DNS aliases used to reach the distrib."

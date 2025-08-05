@@ -29,7 +29,7 @@ resource "aws_cloudfront_distribution" "distribution" {
   }
 
   origin {
-    domain_name              = data.aws_s3_bucket.origin_bucket.bucket_regional_domain_name
+    domain_name              = var.origin_bucket_regional_domain_name
     origin_access_control_id = aws_cloudfront_origin_access_control.oac.id
     origin_id                = "${var.webapp_name}-prim"
   }
@@ -44,9 +44,9 @@ resource "aws_cloudfront_distribution" "distribution" {
   }
 
   dynamic "logging_config" {
-    for_each = var.use_log_bucket != "" ? [0] : []
+    for_each = var.use_log_bucket ? [0] : []
     content {
-      bucket = data.aws_s3_bucket.log_bucket[0].bucket_domain_name
+      bucket = var.log_bucket_domain_name
     }
   }
 
@@ -92,9 +92,9 @@ resource "aws_cloudfront_distribution" "distribution" {
 
 # Associate the new policy of S3 to allow cloudfront to access the bucket. 
 resource "aws_s3_bucket_policy" "allow_cloudfront_access" {
-  bucket = data.aws_s3_bucket.origin_bucket.id
+  bucket = var.main_bucket_id
   policy = templatefile("${path.module}/s3_cloudfront_access.json.tftpl", {
-    s3_arn         = data.aws_s3_bucket.origin_bucket.arn,
+    s3_arn         = var.main_bucket_arn,
     cloudfront_arn = aws_cloudfront_distribution.distribution.arn
   })
 }
@@ -112,9 +112,9 @@ resource "aws_s3_bucket_policy" "allow_cloudfront_access_failover" {
 
 resource "aws_s3_bucket_policy" "s3_cloudfront_logs_access" {
   count  = var.use_log_bucket ? 1 : 0
-  bucket = data.aws_s3_bucket.log_bucket[0].id
+  bucket = var.log_bucket_id
   policy = templatefile("${path.module}/s3_cloudfront_logs_access.json.tftpl", {
-    s3_arn         = data.aws_s3_bucket.log_bucket[0].arn,
+    s3_arn         = var.log_bucket_arn,
     account_id     = data.aws_caller_identity.current.account_id,
     cloudfront_arn = aws_cloudfront_distribution.distribution.arn
   })

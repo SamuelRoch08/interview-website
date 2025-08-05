@@ -58,8 +58,13 @@ module "cloudfront" {
   }
   webapp_name                          = var.webapp_name
   main_bucket_name                     = module.s3_buckets.main_bucket
+  main_bucket_id                       = module.s3_buckets.main_bucket_id
+  main_bucket_arn                      = module.s3_buckets.main_bucket_arn
+  origin_bucket_regional_domain_name   = module.s3_buckets.main_bucket_regional_dns
   use_log_bucket                       = true
-  log_bucket_name                      = module.s3_buckets.log_bucket
+  log_bucket_id                        = module.s3_buckets.log_bucket_id
+  log_bucket_arn                       = module.s3_buckets.log_bucket_arn
+  log_bucket_domain_name               = module.s3_buckets.log_bucket_dns
   use_failover_bucket                  = var.deploy_dr
   failover_bucket_regional_domain_name = var.deploy_dr ? module.s3_buckets_dr[0].main_bucket_regional_dns : ""
   failover_bucket_id                   = var.deploy_dr ? module.s3_buckets_dr[0].main_bucket_id : ""
