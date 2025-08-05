@@ -13,6 +13,55 @@ variable "container_name" {
   description = "Container name that is deployed."
 }
 
+variable "container_cpu" {
+  type        = number
+  description = "Number of CPU units for the container. 256 = 0.25vCPU, 512 = 0.5vCPU etc."
+  default     = 512
+}
+
+variable "container_mem" {
+  type        = number
+  description = "Number of Mem in MB for the container."
+  default     = 1024
+}
+
+variable "container_port" {
+  type        = number
+  description = "Container name. Default 80."
+  default     = 80
+}
+
+variable "app_listener_port" {
+  type        = number
+  description = "Global listener port of the application. Default is 80."
+  default     = 80
+}
+
+variable "app_listener_protocol" {
+  type        = string
+  description = "Global listener protocol of the application. Default is HTTP."
+  default     = "HTTP"
+}
+
+
+variable "cluster_max_size" {
+  type        = number
+  description = "Cluster maximum size."
+  default     = 3
+}
+
+variable "cluster_min_size" {
+  type        = number
+  description = "Cluster minimum size."
+  default     = 1
+}
+
+variable "cluster_target_size" {
+  type        = number
+  description = "Cluster target size."
+  default     = 2
+}
+
 variable "vpc_cidr" {
   type        = string
   description = "The VPC CIDR"

@@ -1,5 +1,5 @@
 resource "aws_iam_role" "task_exec_role" {
-  name = "${var.project_name}-${var.container_name}-execrole"
+  name = "${var.project_name}-${var.container_name}-${data.aws_region.current.region}-execrole"
   assume_role_policy = jsonencode({
     "Version" : "2008-10-17",
     "Statement" : [

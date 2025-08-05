@@ -1,6 +1,6 @@
 ## Role for EC2 in the cluster 
 resource "aws_iam_role" "ec2_role_for_ecs" {
-  name = "${var.cluster_name}-ec2-role"
+  name = "${var.cluster_name}-${data.aws_region.current.region}-ec2-role"
   assume_role_policy = jsonencode({
     "Version" : "2008-10-17",
     "Statement" : [
@@ -92,7 +92,7 @@ resource "aws_ecs_cluster" "cluster" {
 # The launch template that will be used by the ASG and, in fine, the Cluster 
 resource "aws_launch_template" "cluster" {
   name_prefix            = "${var.cluster_name}-lt"
-  image_id               = var.cluster_instance_ami
+  image_id               = data.aws_ami.ecs_ami.image_id
   instance_type          = var.cluster_instance_types
   vpc_security_group_ids = [aws_security_group.cluster.id]
 
