@@ -70,6 +70,7 @@ No providers.
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_interview_webapp1"></a> [interview\_webapp1](#module\_interview\_webapp1) | ./registry/app/webapp-on-ecs-asg | n/a |
+| <a name="module_interview_webapp2"></a> [interview\_webapp2](#module\_interview\_webapp2) | ./registry/app/webapp-on-s3-cdn | n/a |
 
 ## Resources
 
@@ -88,6 +89,7 @@ No resources.
 | Name | Description |
 |------|-------------|
 | <a name="output_interview_webapp1_url"></a> [interview\_webapp1\_url](#output\_interview\_webapp1\_url) | n/a |
+| <a name="output_interview_webapp2_url"></a> [interview\_webapp2\_url](#output\_interview\_webapp2\_url) | n/a |
 <!-- END_TF_DOCS -->
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 README.md updated successfully
