@@ -27,11 +27,11 @@ output "log_bucket" {
 
 output "log_bucket_id" {
   description = "Name of the log bucket"
-  value = module.s3_logs.bucket_id
+  value       = module.s3_logs.bucket_id
 }
 
 output "log_bucket_dns" {
-  value = module.s3_logs.bucket_dns
+  value       = module.s3_logs.bucket_dns
   description = "Log Bucket domain name. Will be of format bucketname.s3.amazonaws.com"
 }
 
