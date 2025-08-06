@@ -18,9 +18,3 @@ variable "deploy_dr" {
   default     = false
   description = "Deploy DR in secondary region if needed."
 }
-
-variable "secondary_region" {
-  type        = string
-  default     = "eu-central-1"
-  description = "Secondary region to deploy the DR into."
-}

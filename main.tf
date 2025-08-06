@@ -2,9 +2,9 @@
 module "interview_webapp1" {
   source = "./registry/app/webapp-on-ecs-asg"
 
-  webapp_name     = "webapp-on-ecs"
-  webapp_src_code = "${path.cwd}/src/webapp-on-ecs/"
-  container_name  = "httpd"
+  webapp_name     = var.webapp1_config.name
+  webapp_src_code = "${path.cwd}/${var.webapp2_config.src_code}/"
+  container_name  = var.webapp1_config.container_name
 
   providers = {
     aws           = aws
@@ -15,11 +15,10 @@ module "interview_webapp1" {
 module "interview_webapp2" {
   source = "./registry/app/webapp-on-s3-cdn"
 
-  profile          = var.profile
-  webapp_name      = "webapp-on-s3"
-  webapp_src_code  = "${path.cwd}/src/webapp-on-s3/react-app/"
-  secondary_region = var.secondary_region
-  deploy_dr        = true
+  profile         = var.profile
+  webapp_name     = var.webapp2_config.name
+  webapp_src_code = "${path.cwd}/${var.webapp2_config.src_code}"
+  deploy_dr       = var.webapp2_config.deploy_dr
 
   providers = {
     aws    = aws

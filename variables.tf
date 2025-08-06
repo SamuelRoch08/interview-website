@@ -8,6 +8,16 @@ variable "secondary_region" {
   description = "AWS secondary region to use."
 }
 
+variable "webapp1_config" {
+  type        = map(any)
+  description = "Config for webapp1"
+}
+
+variable "webapp2_config" {
+  type        = map(any)
+  description = "Config for webapp2"
+}
+
 variable "profile" {
   type        = string
   default     = "sandbox"
