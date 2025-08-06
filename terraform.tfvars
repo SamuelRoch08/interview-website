@@ -2,6 +2,10 @@
 primary_region   = "eu-west-1"
 secondary_region = "us-east-1"
 profile          = "sandbox"
+default_tags = {
+      "Owner"   = "Samuel Rochcongar"
+      "Project" = "WebApp"
+    }
 
 webapp1_config = {
   name           = "webapp-on-ecs"

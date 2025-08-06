@@ -23,3 +23,9 @@ variable "profile" {
   default     = "sandbox"
   description = "Profile used for authentication to AWS. -- Can be changed or ignored if using a CICD or default profile."
 }
+
+variable "default_tags" {
+  type = map(string)
+  description = "Default tags to put into providers config."
+  default = {}
+}

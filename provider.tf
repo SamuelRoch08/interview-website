@@ -30,10 +30,7 @@ provider "aws" {
   profile = var.profile
 
   default_tags {
-    tags = {
-      "Owner"   = "Samuel Rochcongar"
-      "Project" = "WebApp"
-    }
+    tags = var.default_tags
   }
 }
 
@@ -43,9 +40,6 @@ provider "aws" {
   profile = var.profile
 
   default_tags {
-    tags = {
-      "Owner"   = "Samuel Rochcongar"
-      "Project" = "WebApp"
-    }
+    tags = var.default_tags
   }
 }
