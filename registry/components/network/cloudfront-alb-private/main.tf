@@ -53,12 +53,6 @@ resource "aws_cloudfront_distribution" "distribution" {
   origin {
     domain_name = var.main_dns
     origin_id   = "${var.webapp_name}-prim"
-    custom_origin_config {
-      http_port              = var.main_alb_config.http_port
-      https_port             = var.main_alb_config.https_port
-      origin_protocol_policy = var.main_alb_config.protocol_policy
-      origin_ssl_protocols   = var.main_alb_config.ssl_protocols
-    }
     vpc_origin_config {
       vpc_origin_id = aws_cloudfront_vpc_origin.main_alb.id
     }
@@ -69,12 +63,6 @@ resource "aws_cloudfront_distribution" "distribution" {
     content {
       domain_name = var.failover_dns
       origin_id   = "${var.webapp_name}-failover"
-      custom_origin_config {
-        http_port              = var.failover_alb_config.http_port
-        https_port             = var.failover_alb_config.https_port
-        origin_protocol_policy = var.failover_alb_config.protocol_policy
-        origin_ssl_protocols   = var.failover_alb_config.ssl_protocols
-      }
       vpc_origin_config {
         vpc_origin_id = aws_cloudfront_vpc_origin.failover_alb[0].id
       }
