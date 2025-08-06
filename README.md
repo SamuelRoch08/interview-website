@@ -80,9 +80,12 @@ No resources.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_default_tags"></a> [default\_tags](#input\_default\_tags) | Default tags to put into providers config. | `map(string)` | `{}` | no |
 | <a name="input_primary_region"></a> [primary\_region](#input\_primary\_region) | AWS primary region to use. | `string` | n/a | yes |
 | <a name="input_profile"></a> [profile](#input\_profile) | Profile used for authentication to AWS. -- Can be changed or ignored if using a CICD or default profile. | `string` | `"sandbox"` | no |
 | <a name="input_secondary_region"></a> [secondary\_region](#input\_secondary\_region) | AWS secondary region to use. | `string` | n/a | yes |
+| <a name="input_webapp1_config"></a> [webapp1\_config](#input\_webapp1\_config) | Config for webapp1 | `map(any)` | n/a | yes |
+| <a name="input_webapp2_config"></a> [webapp2\_config](#input\_webapp2\_config) | Config for webapp2 | `map(any)` | n/a | yes |
 
 ## Outputs
 
