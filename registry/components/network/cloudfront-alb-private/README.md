@@ -1,8 +1,9 @@
-# cloudfront-alb
+# cloudfront-alb-private
 
 ## Description 
 
-Deploy a new Cloudfront distribution for ALB
+Deploy a new Cloudfront distribution for a private ALB. No need to expose the ALB on internet. 
+It uses a VPC origin. 
 
 
 ## Requirement
@@ -33,6 +34,8 @@ No modules.
 | Name | Type |
 |------|------|
 | [aws_cloudfront_distribution.distribution](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_distribution) | resource |
+| [aws_cloudfront_vpc_origin.failover_alb](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_vpc_origin) | resource |
+| [aws_cloudfront_vpc_origin.main_alb](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_vpc_origin) | resource |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 | [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
 
@@ -45,7 +48,11 @@ No modules.
 | <a name="input_default_ttl"></a> [default\_ttl](#input\_default\_ttl) | Default TTL for caching objects when not asked in the header by the request. | `number` | `3600` | no |
 | <a name="input_dns_aliases"></a> [dns\_aliases](#input\_dns\_aliases) | List of other DNS aliases used to reach the distrib. | `list(string)` | `[]` | no |
 | <a name="input_extra_tags"></a> [extra\_tags](#input\_extra\_tags) | Extra tags to add to any resources. | `map(string)` | `{}` | no |
+| <a name="input_failover_alb_arn"></a> [failover\_alb\_arn](#input\_failover\_alb\_arn) | Failover ALB arn to create the VPC origin. | `string` | `""` | no |
+| <a name="input_failover_alb_config"></a> [failover\_alb\_config](#input\_failover\_alb\_config) | Config of ALB origin as failover. Protocol policy must be http-only, https-only, match-viewer. | <pre>object({<br>    http_port       = number<br>    https_port      = number<br>    protocol_policy = string<br>    ssl_protocols   = list(string)<br>  })</pre> | <pre>{<br>  "http_port": 0,<br>  "https_port": 0,<br>  "protocol_policy": "",<br>  "ssl_protocols": [<br>    ""<br>  ]<br>}</pre> | no |
 | <a name="input_failover_dns"></a> [failover\_dns](#input\_failover\_dns) | DNS for failover. | `string` | `""` | no |
+| <a name="input_main_alb_arn"></a> [main\_alb\_arn](#input\_main\_alb\_arn) | Main ALB arn to create the VPC origin. | `string` | n/a | yes |
+| <a name="input_main_alb_config"></a> [main\_alb\_config](#input\_main\_alb\_config) | Config of ALB origin. Protocol policy must be http-only, https-only, match-viewer. | <pre>object({<br>    http_port       = number<br>    https_port      = number<br>    protocol_policy = string<br>    ssl_protocols   = list(string)<br>  })</pre> | n/a | yes |
 | <a name="input_main_dns"></a> [main\_dns](#input\_main\_dns) | Main DNS to cloudfront. | `string` | n/a | yes |
 | <a name="input_max_ttl"></a> [max\_ttl](#input\_max\_ttl) | Maximum TTL allowed for caching objects when explictly asked in the header by the request. | `number` | `86400` | no |
 | <a name="input_min_ttl"></a> [min\_ttl](#input\_min\_ttl) | Minimum TTL allowed for caching objects when explictly asked in the header by the request. | `number` | `0` | no |

@@ -1,3 +1,34 @@
+resource "aws_cloudfront_vpc_origin" "main_alb" {
+  vpc_origin_endpoint_config {
+    name                   = "${var.webapp_name}-vpc-orig"
+    arn                    = var.main_alb_arn
+    http_port              = var.main_alb_config.http_port
+    https_port             = var.main_alb_config.https_port
+    origin_protocol_policy = var.main_alb_config.protocol_policy
+    origin_ssl_protocols {
+      items    = var.main_alb_config.ssl_protocols
+      quantity = 1
+    }
+  }
+  tags = var.extra_tags
+}
+
+resource "aws_cloudfront_vpc_origin" "failover_alb" {
+  count = var.use_failover_dns ? 1 : 0
+  vpc_origin_endpoint_config {
+    name                   = "${var.webapp_name}-vpc-orig-failover"
+    arn                    = var.failover_alb_arn
+    http_port              = var.failover_alb_config.http_port
+    https_port             = var.failover_alb_config.https_port
+    origin_protocol_policy = var.failover_alb_config.protocol_policy
+    origin_ssl_protocols {
+      items    = var.failover_alb_config.ssl_protocols
+      quantity = 1
+    }
+  }
+  tags = var.extra_tags
+}
+
 resource "aws_cloudfront_distribution" "distribution" {
 
   dynamic "origin_group" {
@@ -22,11 +53,8 @@ resource "aws_cloudfront_distribution" "distribution" {
   origin {
     domain_name = var.main_dns
     origin_id   = "${var.webapp_name}-prim"
-    custom_origin_config {
-      http_port              = "80"
-      https_port             = "443"
-      origin_ssl_protocols   = ["TLSv1.2"]
-      origin_protocol_policy = "http-only"
+    vpc_origin_config {
+      vpc_origin_id = aws_cloudfront_vpc_origin.main_alb.id
     }
   }
 
@@ -35,11 +63,8 @@ resource "aws_cloudfront_distribution" "distribution" {
     content {
       domain_name = var.failover_dns
       origin_id   = "${var.webapp_name}-failover"
-      custom_origin_config {
-        http_port              = "80"
-        https_port             = "443"
-        origin_ssl_protocols   = ["TLSv1.2"]
-        origin_protocol_policy = "http-only"
+      vpc_origin_config {
+        vpc_origin_id = aws_cloudfront_vpc_origin.failover_alb[0].id
       }
     }
   }

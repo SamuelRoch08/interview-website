@@ -1,19 +1,20 @@
 module "network_foundations" {
   source = "../../../components/network/vpc-subnets-multi-az"
 
-  network_name   = var.webapp_name
-  vpc_cidr       = var.vpc_cidr
-  public_subnets = var.public_subnets
-  app_subnets    = var.app_subnets
-  data_subnets   = var.data_subnets
-  extra_tags     = var.wepapp_tags
+  network_name      = var.webapp_name
+  vpc_cidr          = var.vpc_cidr
+  public_subnets     = var.public_subnets
+  app_subnets       = var.app_subnets
+  data_subnets      = var.data_subnets
+  extra_tags        = var.wepapp_tags
+
 }
 
 module "ecs_alb" {
   source = "../../../components/compute/alb"
 
   project_name             = var.webapp_name
-  is_internal              = false
+  is_internal              = true
   lb_subnets               = module.network_foundations.publics_subnets_ids
   enable_lb_access_logging = true
   listener_port            = var.app_listener_port
