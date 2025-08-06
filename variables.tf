@@ -25,7 +25,7 @@ variable "profile" {
 }
 
 variable "default_tags" {
-  type = map(string)
+  type        = map(string)
   description = "Default tags to put into providers config."
-  default = {}
+  default     = {}
 }
