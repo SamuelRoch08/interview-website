@@ -30,7 +30,7 @@ function App() {
           SR. 
         </p>
         <img src={archi} className="App-archi" alt="archi" />
-        <p>Last build on <b>{getDate()}</b></p>
+        <p>Current date : <b>{getDate()}</b></p>
         <a
           className="App-link"
           href="https://reactjs.org"
