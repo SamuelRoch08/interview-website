@@ -1,8 +1,9 @@
-# cloudfront-alb
+# cloudfront-alb-private
 
 ## Description 
 
-Deploy a new Cloudfront distribution for ALB
+Deploy a new Cloudfront distribution for a private ALB. No need to expose the ALB on internet. 
+It uses a VPC origin. 
 
 
 ## Requirement

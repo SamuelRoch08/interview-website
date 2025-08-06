@@ -8,10 +8,47 @@ variable "main_dns" {
   description = "Main DNS to cloudfront."
 }
 
+variable "main_alb_arn" {
+  type        = string
+  description = "Main ALB arn to create the VPC origin. "
+}
+
+variable "main_alb_config" {
+  type = object({
+    http_port       = number
+    https_port      = number
+    protocol_policy = string
+    ssl_protocols   = list(string)
+  })
+  description = "Config of ALB origin. Protocol policy must be http-only, https-only, match-viewer."
+}
+
 variable "use_failover_dns" {
   type        = bool
   default     = false
   description = "Use failover DNS or not."
+}
+
+variable "failover_alb_arn" {
+  type        = string
+  description = "Failover ALB arn to create the VPC origin. "
+  default     = ""
+}
+
+variable "failover_alb_config" {
+  type = object({
+    http_port       = number
+    https_port      = number
+    protocol_policy = string
+    ssl_protocols   = list(string)
+  })
+  description = "Config of ALB origin as failover. Protocol policy must be http-only, https-only, match-viewer."
+  default = {
+    http_port       = 0
+    https_port      = 0
+    protocol_policy = ""
+    ssl_protocols   = [""]
+  }
 }
 
 variable "failover_dns" {
